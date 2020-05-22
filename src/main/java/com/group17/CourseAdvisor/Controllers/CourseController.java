@@ -1,7 +1,10 @@
 package com.group17.CourseAdvisor.Controllers;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.group17.CourseAdvisor.DAO.CourseDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author asu
@@ -9,9 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Description
  **/
 @RestController
+@RequestMapping("course")
 public class CourseController {
+    @Autowired
+    private CourseDao courseDao;
+
     @RequestMapping("/")
-    public String helloWorld(){
-        return "hello world";
+    public String getAllCourses(){
+        return courseDao.getAllCourses();
     }
 }
