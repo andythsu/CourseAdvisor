@@ -16,6 +16,22 @@ jobs:
       - name: resolve permission for ./mvnw
         run: |
           chmod +x mvnw
-      - name: build mvn
+      # - name: build mvn
+      #   run: |
+      #     ./mvnw clean install
+      - name: install heroku
         run: |
-          ./mvnw clean install
+          sudo snap install --classic heroku
+      - name: create netrc file
+        run: |
+          cat >~/.netrc <<EOF
+            machine api.heroku.com
+                login ${{secrets.HEROKU_USERNAME}}
+                password ${{secrets.HEROKU_PASSWORD}}
+            machine git.heroku.com
+                login ${{secrets.HEROKU_USERNAME}}
+                password ${{secrets.HEROKU_PASSWORD}}
+            EOF
+      - name: heroku login
+        run: |
+          heroku login
