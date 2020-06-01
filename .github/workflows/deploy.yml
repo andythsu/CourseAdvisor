@@ -35,3 +35,6 @@ jobs:
       - name: heroku login
         run: |
           heroku login
+      - name: heroku push
+        run: |
+          ./mvnw clean heroku:deploy
