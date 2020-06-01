@@ -9,5 +9,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: resolve permission for ./mvnw
+        run: |
+          chmod +x mvnw
       - name: build mvn
-        run: ./mvnw clean install
+        run: |
+          ./mvnw clean install
