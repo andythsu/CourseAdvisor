@@ -32,6 +32,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{env.JDK_VERSION}}
+      - name: resolve permission for ./mvnw
+        run: |
+          chmod +x mvnw
       - name: install heroku
         run: |
           sudo snap install --classic heroku
