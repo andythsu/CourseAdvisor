@@ -2,9 +2,11 @@ name: Deploy to heroku
 # This workflow is triggered on pushes to the repository.
 on: [push]
 
+env:
+  JDK_VERSION: '11'
+
 jobs:
   build:
-    # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -12,13 +14,27 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v1
         with:
-          java-version: '11'
+          java-version: ${{env.JDK_VERSION}}
       - name: resolve permission for ./mvnw
         run: |
           chmod +x mvnw
-      # - name: build mvn
-      #   run: |
-      #     ./mvnw clean install
+      # making sure we can build before we publish to heroku
+      - name: build maven
+        run: |
+          ./mvnw clean install
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{env.JDK_VERSION}}
+      - name: resolve permission for ./mvnw
+        run: |
+          chmod +x mvnw
       - name: install heroku
         run: |
           sudo snap install --classic heroku
