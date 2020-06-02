@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-    # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,9 +15,14 @@ jobs:
       - name: resolve permission for ./mvnw
         run: |
           chmod +x mvnw
-      # - name: build mvn
-      #   run: |
-      #     ./mvnw clean install
+      # making sure we can build before we publish to heroku
+      - name: build maven
+        run: |
+          ./mvnw clean install
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: install heroku
         run: |
           sudo snap install --classic heroku
